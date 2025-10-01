@@ -17,7 +17,7 @@ pnpm add corporate-number-jp
 ## 使い方
 
 ```typescript
-import { validateCorporateNumber } from 'corporate-number-jp';
+import { validateCorporateNumber, type ErrorType } from 'corporate-number-jp';
 
 const result = validateCorporateNumber('1180301018771');
 
@@ -27,7 +27,9 @@ if (result.valid) {
   console.log('本体部分:', result.bodyDigits);
   console.log('法人番号:', result.corporateNumberDigits);
 } else {
-  // result.valid が false の場合、error プロパティにアクセスできます
+  // result.valid が false の場合、error と errorType にアクセスできます
+  const errorType: ErrorType = result.errorType;
+  console.log('エラータイプ:', errorType);
   console.log('エラー:', result.error);
 }
 ```
@@ -60,9 +62,19 @@ if (result.valid) {
 ```typescript
 {
   valid: false,
-  error: string  // エラーメッセージ
+  error: string,        // エラーメッセージ
+  errorType: ErrorType  // エラータイプ
 }
 ```
+
+#### エラータイプ (`ErrorType`)
+
+以下の値のいずれかです。
+
+- `NON_NUMERIC`: 文字列/数値入力に数字以外が含まれている
+- `INVALID_LENGTH`: 桁数が 13 桁ではない
+- `CHECK_DIGIT_MISMATCH`: チェックデジットが一致しない
+- `INVALID_ARRAY_ELEMENT`: 配列入力に 0-9 の整数以外が含まれている
 
 ## 法人番号について
 

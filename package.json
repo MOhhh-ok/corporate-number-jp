@@ -1,6 +1,6 @@
 {
   "name": "corporate-number-jp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "日本の法人番号をローカル検証します",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
