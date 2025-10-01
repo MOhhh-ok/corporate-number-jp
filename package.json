@@ -11,5 +11,10 @@
   "devDependencies": {
     "typescript": "^5.3.3",
     "vitest": "^3.2.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohhh-ok/corporate-number-jp"
+  },
+  "license": "MIT"
 }
