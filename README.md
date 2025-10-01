@@ -80,7 +80,6 @@ pnpm test
 pnpm build
 ```
 
-## リポジトリ
+## License
 
-https://github.com/mohhh-ok/corporate-number-jp
-
+MIT
