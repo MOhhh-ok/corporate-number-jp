@@ -17,7 +17,7 @@ pnpm add corporate-number-jp
 ## 使い方
 
 ```typescript
-import { validateCorporateNumber, type ErrorType } from 'corporate-number-jp';
+import { validateCorporateNumber, fakeCorporateNumber, type ErrorType } from 'corporate-number-jp';
 
 const result = validateCorporateNumber('1180301018771');
 
@@ -32,6 +32,12 @@ if (result.valid) {
   console.log('エラータイプ:', errorType);
   console.log('エラー:', result.error);
 }
+
+// ランダムに正しい法人番号（13桁）を生成
+const fake = fakeCorporateNumber();
+console.log('fake:', fake); // 例: "1180301018771"
+const check = validateCorporateNumber(fake);
+console.log('valid?:', check.valid); // 常に true
 ```
 
 ## API
@@ -75,6 +81,16 @@ if (result.valid) {
 - `INVALID_LENGTH`: 桁数が 13 桁ではない
 - `CHECK_DIGIT_MISMATCH`: チェックデジットが一致しない
 - `INVALID_ARRAY_ELEMENT`: 配列入力に 0-9 の整数以外が含まれている
+
+### `fakeCorporateNumber()`
+
+12桁の本体部分をランダムに生成し、チェックデジットを計算して先頭に付与した13桁の法人番号文字列を返します。`validateCorporateNumber` で常に妥当と判定されます。
+
+```typescript
+const fake = fakeCorporateNumber(); // "\d{13}"
+const result = validateCorporateNumber(fake);
+// result.valid === true
+```
 
 ## 法人番号について
 

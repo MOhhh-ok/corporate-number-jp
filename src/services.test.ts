@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateCorporateNumber } from './corporateNumber';
+import { validateCorporateNumber, fakeCorporateNumber } from './services';
 import { type ErrorType } from './types';
 
 // https://www.houjin-bangou.nta.go.jp/
@@ -34,6 +34,24 @@ describe('validateCorporateNumber', () => {
     }
   });
 
+  it('fakeCorporateNumber generates 13-digit valid numbers', () => {
+    for (let i = 0; i < 20; i++) {
+      const fake = fakeCorporateNumber();
+      // 13 桁の数字文字列
+      expect(fake).toMatch(/^\d{13}$/);
+      const result = validateCorporateNumber(fake);
+      expect(result.valid).toBe(true);
+    }
+  });
+
+  it('fakeCorporateNumber likely generates different values across calls', () => {
+    const set = new Set<string>();
+    for (let i = 0; i < 50; i++) {
+      set.add(fakeCorporateNumber());
+    }
+    // 生成の重複が少ないことを緩く確認（ランダム性の健全性チェック）
+    expect(set.size).toBeGreaterThan(40);
+  });
   it('returns NON_NUMERIC for non-numeric string input', () => {
     const result = validateCorporateNumber('12345abc678901');
     if (!result.valid) {

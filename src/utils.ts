@@ -1,25 +1,6 @@
-import { CorporateNumberError, ValidateResult } from "./types";
+import { CorporateNumberError } from "./types";
 
-
-export function validateCorporateNumber(corporateNumberDigits: string | number | number[]): ValidateResult {
-  try {
-    const digits = toDigits(corporateNumberDigits);
-    const { checkDigit, bodyDigits } = splitCorporateNumberDigits(digits);
-    const calculatedCheckDigit = calculateCheckDigit(bodyDigits);
-    if (calculatedCheckDigit !== checkDigit) {
-      throw new CorporateNumberError('チェックデジットが一致しません', 'CHECK_DIGIT_MISMATCH');
-    }
-    return { valid: true, checkDigit, bodyDigits, corporateNumberDigits: digits };
-  } catch (error: any) {
-    if (error instanceof CorporateNumberError) {
-      return { valid: false, error: error.message, errorType: error.errorType };
-    }
-    // 想定外エラーは一般化（型安全のためフォールバック）
-    return { valid: false, error: error?.message ?? '不明なエラーが発生しました', errorType: 'CHECK_DIGIT_MISMATCH' };
-  }
-}
-
-function toDigits(corporateNumberDigits: string | number | number[]): number[] {
+export function toDigits(corporateNumberDigits: string | number | number[]): number[] {
   let result: number[];
   switch (typeof corporateNumberDigits) {
     case 'string':
@@ -43,7 +24,7 @@ function toDigits(corporateNumberDigits: string | number | number[]): number[] {
 }
 
 
-function calculateCheckDigit(bodyDigits: number[]): number {
+export function calculateCheckDigit(bodyDigits: number[]): number {
   const evens = bodyDigits.filter((_, i) => i % 2 === 0);
   const odds = bodyDigits.filter((_, i) => i % 2 === 1);
   const evensSum = evens.reduce((acc, cur) => acc + cur, 0);
@@ -51,7 +32,7 @@ function calculateCheckDigit(bodyDigits: number[]): number {
   return 9 - ((evensSum * 2 + oddsSum) % 9);
 }
 
-function splitCorporateNumberDigits(corporateNumberDigits: number[]) {
+export function splitCorporateNumberDigits(corporateNumberDigits: number[]) {
   if (corporateNumberDigits.length !== 13) {
     throw new CorporateNumberError('法人番号は13桁で入力してください', 'INVALID_LENGTH');
   }

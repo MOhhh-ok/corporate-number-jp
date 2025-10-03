@@ -1,2 +1,2 @@
-export * from './corporateNumber';
+export * from './services';
 export * from './types';
